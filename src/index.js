@@ -45,7 +45,6 @@ function renderCountries (countries) {
         resetMarkup();
         countries.map((country) => {
             const languages = Object.values(country.languages)
-            console.log(languages)
             const markup = 
             `<li class="country">
                 <img width="40" src="${country.flags.svg}"/><span class="country-name">${country.name.official}</span>
