@@ -22,10 +22,10 @@ function onSearch(event) {
 }
 
 function renderCountries (countries) {
-    if (!countries) {
-        return resetMarkup()
-    }
-    
+    if (countries.length > 10) {
+        resetMarkup() 
+        Notify.info("Too many matches found. Please enter a more specific name.")
+         } 
     if (countries.length === 1) {
         resetMarkup()
         countries.map((country) => {   
@@ -56,10 +56,7 @@ function renderCountries (countries) {
             refs.countriesList.insertAdjacentHTML('beforeend', markup)
             })
         }
-    if (countries.length > 10) {
-        resetMarkup() 
-        Notify.info("Too many matches found. Please enter a more specific name.")
-         } 
+    
     }
 
 function resetMarkup () {
