@@ -15,6 +15,10 @@ refs.inputField.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY))
 
 function onSearch(event) { 
     const value = event.target.value.trim()
+    if (value.length === 0) {
+        return
+    }
+
     fetchCountry(value)
     .then(renderCountries)
     .catch(dropErrorMessage)
@@ -56,7 +60,6 @@ function renderCountries (countries) {
             refs.countriesList.insertAdjacentHTML('beforeend', markup)
             })
         }
-    
     }
 
 function resetMarkup () {
