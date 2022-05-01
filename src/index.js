@@ -22,7 +22,11 @@ function onSearch(event) {
 }
 
 function renderCountries (countries) {
-    if (countries.length < 2) {
+    if (!countries) {
+        return resetMarkup()
+    }
+    
+    if (countries.length === 1) {
         resetMarkup()
         countries.map((country) => {   
             const languages = Object.values(country.languages).join(", ")
@@ -53,6 +57,7 @@ function renderCountries (countries) {
             })
         }
     if (countries.length > 10) {
+        resetMarkup() 
         Notify.info("Too many matches found. Please enter a more specific name.")
          } 
     }
@@ -64,5 +69,6 @@ function resetMarkup () {
 
 function dropErrorMessage(error) {
     resetMarkup() 
-    return Notify.failure("Oops, there is no country with that name") 
+    console.log(error)
+    return Notify.failure("Oops, there is no country with that name")  
 }
