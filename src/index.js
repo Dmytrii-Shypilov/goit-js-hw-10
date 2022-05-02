@@ -11,56 +11,34 @@ const refs = {
     countriesList: document.querySelector('.country-list')
 }
 
-refs.inputField.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY))
+refs.inputField.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
 function onSearch(event) { 
-    const value = event.target.value.trim()
+    const value = event.target.value.trim();
+    
     if (value.length === 0) {
         return
-    }
+    };
 
     fetchCountry(value)
     .then(renderCountries)
-    .catch(dropErrorMessage)
-    
+    .catch(dropErrorMessage);   
 }
 
 function renderCountries (countries) {
     if (countries.length > 10) {
-        resetMarkup() 
-        Notify.info("Too many matches found. Please enter a more specific name.")
-         } 
+        resetMarkup(); 
+        Notify.info("Too many matches found. Please enter a more specific name.");
+         };
     if (countries.length === 1) {
         resetMarkup()
-        countries.map((country) => {   
-            const languages = Object.values(country.languages).join(", ")
-            const markup = 
-            `<div class="wrapper">
-                <img width="60" src="${country.flags.svg}"/>
-                <p class="country-title">${country.name.official}</p>
-            </div>
-            <ul class="description-list">
-                 <li class="description-item">Capital: <span class="text"> ${country.capital}</span></li>
-                <li class="description-item">Population: <span class="text">${country.population}</span></li>
-                 <li class="description-item">Languages: <span class="text">${languages}</span></li>
-            </ul>`
-                
-        return refs.countryDescription.insertAdjacentHTML('beforeend', markup) 
-        })
-    }
-
+        renderOneCountry(countries)
+    };
     if (countries.length > 1 && countries.length < 11) {
         resetMarkup();
-        countries.map((country) => {
-            const languages = Object.values(country.languages)
-            const markup = 
-            `<li class="country">
-                <img width="40" src="${country.flags.svg}"/><span class="country-name">${country.name.official}</span>
-            </li> `
-            refs.countriesList.insertAdjacentHTML('beforeend', markup)
-            })
-        }
-    }
+        renderSeveralCountries(countries)
+        };
+    };
 
 function resetMarkup () {
     refs.countriesList.innerHTML=" ";
@@ -68,7 +46,36 @@ function resetMarkup () {
 }
 
 function dropErrorMessage(error) {
-    resetMarkup() 
-    console.log(error)
-    return Notify.failure("Oops, there is no country with that name")  
+    resetMarkup();
+    console.log(error);
+    return Notify.failure("Oops, there is no country with that name"); 
 }
+
+function renderOneCountry (countries) {
+    countries.map((country) => {   
+        const languages = Object.values(country.languages).join(", ")
+        const markup = 
+        `<div class="wrapper">
+            <img width="60" src="${country.flags.svg}"/>
+            <p class="country-title">${country.name.official}</p>
+        </div>
+        <ul class="description-list">
+             <li class="description-item">Capital: <span class="text"> ${country.capital}</span></li>
+            <li class="description-item">Population: <span class="text">${country.population}</span></li>
+             <li class="description-item">Languages: <span class="text">${languages}</span></li>
+        </ul>`
+            
+    return refs.countryDescription.insertAdjacentHTML('beforeend', markup);
+    })
+};
+
+function renderSeveralCountries (countries) {
+    countries.map((country) => {
+        const languages = Object.values(country.languages)
+        const markup = 
+        `<li class="country">
+            <img width="40" src="${country.flags.svg}"/><span class="country-name">${country.name.official}</span>
+        </li> `
+        refs.countriesList.insertAdjacentHTML('beforeend', markup);
+        });
+};
